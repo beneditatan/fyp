@@ -17,9 +17,9 @@ function [result] = CSP(varargin)               %http://www.mathworks.com/help/m
     for i = 1:nargin
               
         %mean here?
-        %R{i} = ((varargin{i}*varargin{i}')/trace(varargin{i}*varargin{i}'));%instantiate me before the loop!
+        R{i} = ((varargin{i}*varargin{i}')/trace(varargin{i}*varargin{i}'));   %instantiate me before the loop!
         %Ramoser equation (2)
-        R{i}=varargin{i};
+        %R{i}=varargin{i};
         
         Rsum=Rsum+R{i};
     end
@@ -75,4 +75,5 @@ function [result] = CSP(varargin)               %http://www.mathworks.com/help/m
     
     %Resulting Projection Matrix-these are the spatial filter coefficients
     result = (B'*W);                                %here B' is B eigenvector , W is P      and result is matric w    in eqn 5
+    %disp(result)
 end
