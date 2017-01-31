@@ -1,0 +1,44 @@
+clear all;
+clc
+close all;
+load('../../../shARED/daTASETS/liver_tra1.mat');
+train = LIV;
+% train(:,end)=train(:,end)+1;
+load('../../../shARED/daTASETS/liver_tra1.mat');
+test= LIV;
+% test(:,end)=test(:,end)+1;
+
+parameter.trainmode = 1;
+parameter.dthr = .53695;
+parameter.mofn = 1;
+parameter.ecmepochs =5;
+parameter.mlpepochs = 6;
+parameter.dispmode = 1;
+
+%%%% Processing data using denfis
+tre = denfis(train,parameter);
+tes = denfiss(test,tre);
+
+%%%% Calculating the efficiency
+ny = max(train(end,:));
+
+conf = zeros(2,2);
+conft = zeros(2,2);
+
+c = uint8(round(tre.Out));
+ct = uint8(round(tes.Out));
+
+for i=1:size(train,1)
+    if (c(i)>ny), c(i) = ny; end
+    conf(c(i),train(i,end)) = conf(c(i),train(i,end)) + 1;
+end
+for i= 1: size(test,1)
+    if (ct(i)>ny), ct(i) = ny; end
+    conft(ct(i),test(i,end)) = conf(ct(i),test(i,end)) + 1;    
+end
+conf
+sum(diag(conf))/sum(sum(conf))
+sum(diag(conf)'./sum(conf))/size(conf,1)
+conft
+sum(diag(conft))/sum(sum(conft))
+sum(diag(conft)'./sum(conft))/size(conft,1)
